@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(curl -s https://raw.githubusercontent.com/czlonkowski/n8n-skills/main/.claude-plugin/plugin.json)",
+      "Bash(curl -s https://api.github.com/repos/czlonkowski/n8n-skills/contents)",
+      "Bash(python -m json.tool)"
+    ]
+  }
+}

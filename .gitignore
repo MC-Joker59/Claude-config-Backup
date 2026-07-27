@@ -1,0 +1,19 @@
+# --- Secrets : NE JAMAIS committer ---
+.credentials.json
+*.credentials.json
+.claude.json
+
+# --- Caches Claude régénérables ---
+cache/
+plugins/
+sessions/
+shell-snapshots/
+telemetry/
+session-env/
+
+# --- Transcripts de sessions (logs volumineux) ---
+*.jsonl
+
+# --- OS ---
+.DS_Store
+Thumbs.db

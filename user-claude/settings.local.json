@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\PaulMARTINCHAN\\\\Documents\\\\Absis Conseil\" -Force 2>$null | Select-Object Name, @{Name=\"Type\"; Expression={if \\($_.PSIsContainer\\) {\"Folder\"} else {\"File\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\PaulMARTINCHAN\\\\.claude\\\\projects\" | Select-Object Name, @{Name=\"Type\"; Expression={if \\($_.PSIsContainer\\) {\"Folder\"} else {\"File\"}}})",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\PaulMARTINCHAN\\\\.claude\\\\projects\\\\c--Users-PaulMARTINCHAN-Documents-Absis-Conseil-Test-Apps-Creation\" | Select-Object Name, @{Name=\"Type\"; Expression={if \\($_.PSIsContainer\\) {\"Folder\"} else {\"File\"}}})",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\PaulMARTINCHAN\\\\Documents\\\\Absis Conseil\\\\Test Apps Creation\" -Recurse -Depth 2 | Select-Object Name, @{Name=\"Type\"; Expression={if \\($_.PSIsContainer\\) {\"Folder\"} else {\"File\"}}})",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\PaulMARTINCHAN\\\\Documents\\\\Absis Conseil\\\\Test Apps Creation\\\\Mini-CRM\" | Select-Object Name, @{Name=\"Type\"; Expression={if \\($_.PSIsContainer\\) {\"Folder\"} else {\"File\"}}})",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\PaulMARTINCHAN\\\\Documents\\\\Absis Conseil\\\\Test Apps Creation\\\\SnapEx\" | Select-Object Name, @{Name=\"Type\"; Expression={if \\($_.PSIsContainer\\) {\"Folder\"} else {\"File\"}}})",
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\PaulMARTINCHAN\\\\Documents\\\\Absis Conseil\\\\Test Apps Creation\\\\Mini-CRM\\\\crm.html\"\\).Count)",
+      "PowerShell(python --version)",
+      "PowerShell(if \\($?\\) { \"python ok\" })",
+      "mcp__Claude_in_Chrome__list_connected_browsers",
+      "mcp__Claude_in_Chrome__select_browser",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "mcp__Claude_in_Chrome__computer"
+    ]
+  }
+}

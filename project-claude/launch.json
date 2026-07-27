@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "agrica-benchmark",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "4178", "--directory", "C:\\Users\\PaulMARTINCHAN\\Documents\\Absis Conseil\\Benchmark outils AGRICA\\agrica-benchmark"],
+      "port": 4178
+    },
+    {
+      "name": "absis-site-web",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "4179", "--directory", "C:\\Users\\PaulMARTINCHAN\\Documents\\Absis Conseil\\site web"],
+      "port": 4179
+    }
+  ]
+}

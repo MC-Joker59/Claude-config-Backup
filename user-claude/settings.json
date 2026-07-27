@@ -1,0 +1,35 @@
+{
+  "enabledPlugins": {
+    "n8n-mcp-skills@n8n-mcp-skills": true,
+    "claude-obsidian@agricidaniel-claude-obsidian": true,
+    "claude-seo@agricidaniel-claude-seo": true
+  },
+  "extraKnownMarketplaces": {
+    "n8n-mcp-skills": {
+      "source": {
+        "source": "github",
+        "repo": "czlonkowski/n8n-skills"
+      }
+    },
+    "agricidaniel-claude-obsidian": {
+      "source": {
+        "source": "github",
+        "repo": "AgriciDaniel/claude-obsidian"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/anthropics/claude-plugins-official.git"
+      }
+    },
+    "agricidaniel-claude-seo": {
+      "source": {
+        "source": "github",
+        "repo": "AgriciDaniel/claude-seo"
+      }
+    }
+  },
+  "autoUpdatesChannel": "latest",
+  "skipWorkflowUsageWarning": true
+}
