@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: fb862560-dcf4-40fe-a28c-6933833fc676
-  modified: 2026-07-27T14:34:15.035Z
+  modified: 2026-07-27T15:02:36.516Z
 ---
 
 Paul prévoit (anticipé le 2026-06-29, sans date arrêtée) de **changer d'ordinateur ET de compte Claude** et veut conserver/transférer son wiki « second cerveau » + son setup Claude. Pas urgent — à ré-aborder quand il le demandera.
@@ -14,6 +14,7 @@ Paul prévoit (anticipé le 2026-06-29, sans date arrêtée) de **changer d'ordi
 - **Vault** poussé sur un **remote GitHub privé** : `MC-Joker59/wiki-second-brain` (HTTPS, branche `main`). Pour maj : `git add -A && git commit && git push` depuis le dossier du vault. Le risque « un seul disque » est levé.
 - **Config Claude** sauvegardée dans `Documents\Absis Conseil\Claude-Config-Backup\` (+ zip daté) ET poussée sur un **2ᵉ remote GitHub privé** : `MC-Joker59/Claude-config-Backup` (HTTPS, branche `main`). Contenu : CLAUDE.md, settings*.json, mcp_servers.json, skills/, projects/*/memory/, config projet, et un `LISEZ-MOI-MIGRATION.md` (runbook autonome). `.gitignore` exclut credentials, `.claude.json`, caches, `*.jsonl`. **Transcripts de sessions volontairement NON sauvegardés** (295 Mo de logs, aucune valeur pour recréer l'environnement ; le savoir est dans le wiki + la mémoire). Plugins non copiés (réinstall auto via settings.json).
 - **Description du wiki recadrée** : n'est plus « projets ABSIS Conseil » mais « second cerveau généraliste de Paul » (CLAUDE.md du vault, wiki/index.md, wiki/overview.md).
+- **Décision différée (2026-07-27)** : élargir mes **instructions globales** (`~/.claude/CLAUDE.md`) pour que je consulte spontanément le wiki sur TOUS les projets perso de Paul (pas seulement ABSIS/IÉSEG). Paul a dit « pas pour le moment » — à lui reproposer **quand il installe le nouveau PC**. Instructions globales laissées inchangées pour l'instant.
 
 **Why:** tout son savoir est dans des fichiers locaux ; un mauvais transfert = perte définitive.
 
