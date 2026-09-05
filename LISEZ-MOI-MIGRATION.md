@@ -20,10 +20,20 @@ Claude-Config-Backup/
 │   ├── mcp_servers.json         (serveurs MCP — n8n)
 │   ├── skills/                 (skills perso : graphify, llm-council, animations…)
 │   └── projects/               (MÉMOIRE = base de connaissance, par projet)
-└── project-claude/            → à recopier dans  <dossier projet "Claude Code">\.claude\
-    ├── launch.json
-    └── settings.local.json
+├── project-claude/            → à recopier dans  <dossier projet "Claude Code">\.claude\
+│   ├── launch.json
+│   └── settings.local.json
+└── benchmark-assets/          → contrat de données du skill /benchmark
+    └── TEMPLATE_BENCHMARK_ABSIS.md
 ```
+
+> **Skill `/benchmark`** : inclus dans `user-claude/skills/benchmark/` (skill perso — personne ne
+> le réinstalle à ta place, contrairement aux plugins). Il référence le contrat de données
+> `TEMPLATE_BENCHMARK_ABSIS.md` : sur le nouveau PC, recopie-le depuis `benchmark-assets/` vers
+> `Documents\Absis Conseil\Claude Code\TEMPLATE_BENCHMARK_ABSIS.md`.
+> ⚠️ Les *implémentations de référence* (`benchmark-demo-test`, `absis-benchmark`,
+> `carnet-ordre-benchmark`…) vivent dans le dossier « Test Apps Creation » — à sauvegarder à part
+> (voir avec Claude si ce n'est pas déjà fait).
 
 ---
 
