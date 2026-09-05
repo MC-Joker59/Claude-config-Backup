@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outils</title>
+<script>document.documentElement.classList.remove('no-js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="Outils">
+<div id="layout-head"></div>
+
+<section class="hero" style="padding:4.2rem 0 3.6rem">
+  <div class="halo halo-gold" style="width:470px;height:470px;top:-200px;right:-120px;opacity:.1"></div>
+  <div class="content-wrap hero-inner">
+    <p class="breadcrumb"><a href="index.html">Accueil</a><span class="breadcrumb-sep">·</span>Outils</p>
+    <span class="section-eyebrow">Le catalogue</span>
+    <h1 style="font-size:clamp(2rem,4.6vw,3.3rem)">Les outils évalués</h1>
+    <span class="accent-line" style="margin:1.2rem 0"></span>
+    <p class="hero-ctx" id="intro" style="margin:0"></p>
+  </div>
+</section>
+
+<div class="filter-bar">
+  <div class="content-wrap">
+    <div class="filter-controls" id="filters"></div>
+  </div>
+</div>
+
+<section style="padding-top:2.5rem">
+  <div class="content-wrap">
+    <div class="tool-grid" id="cards"></div>
+    <p class="empty" id="empty" style="display:none">Aucun outil dans cette famille.</p>
+
+    <!-- Hors périmètre — rendu seulement si meta.horsPerimetre est renseigné -->
+    <div id="hors-perimetre"></div>
+  </div>
+</section>
+
+<div id="layout-foot"></div>
+<script src="data/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+var FILTRE='all';
+
+function dessine(){
+  var os=outils().filter(function(o){ return FILTRE==='all' || o.groupe===FILTRE; });
+  document.getElementById('cards').innerHTML = os.map(carteOutil).join('');
+  document.getElementById('empty').style.display = os.length?'none':'block';
+  var rc=document.getElementById('rc');
+  if(rc) rc.textContent = os.length+' outil'+(os.length>1?'s':'')+' affiché'+(os.length>1?'s':'');
+  initReveal();
+}
+
+function pageInit(){
+  var os=outils();
+  document.getElementById('intro').textContent =
+    os.length+' outils répartis en '+(B.meta.groupes||[]).length+' familles. Les '+
+    finalistes().length+' outils retenus par ABSIS sont signalés. Chaque fiche détaille forces, '+
+    'vigilances, contexte d’usage, coûts et feuille de route de déploiement.';
+
+  var btns=[{id:'all',label:'Toutes les familles'}].concat(
+    (B.meta.groupes||[]).map(function(g){return {id:g.id,label:g.label};}));
+  document.getElementById('filters').innerHTML = btns.map(function(b){
+    return '<button class="filter-btn'+(b.id==='all'?' active':'')+'" data-f="'+b.id+'">'+b.label+'</button>';
+  }).join('') + '<span class="result-count" id="rc"></span>';
+
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.filter-btn').forEach(function(x){x.classList.remove('active');});
+      btn.classList.add('active'); FILTRE=btn.dataset.f; dessine();
+    });
+  });
+  dessine();
+
+  /* Hors périmètre : dire ce qu'on n'a PAS regardé (dégradation propre si vide) */
+  document.getElementById('hors-perimetre').innerHTML = sectionSi(
+    horsPerimetreBloc(), 'Hors périmètre', 'Ce que ce benchmark ne couvre pas',
+    'Ces outils ont été volontairement écartés du panel. Les mentionner évite de laisser '+
+    'croire à un oubli — et indique les pistes d\'une prochaine version.', true);
+}
+</script>
+</body>
+</html>

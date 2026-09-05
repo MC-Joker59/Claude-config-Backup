@@ -2,15 +2,63 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "actif-uc-benchmark",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4186",
+        "--directory",
+        "C:/Users/PaulMARTINCHAN/Documents/Absis Conseil/Test Apps Creation/actif-uc-benchmark"
+      ],
+      "port": 4186
+    },
+    {
+      "name": "signature-benchmark",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4185",
+        "--directory",
+        "C:/Users/PaulMARTINCHAN/Documents/Absis Conseil/Test Apps Creation/signature-electronique-benchmark"
+      ],
+      "port": 4185
+    },
+    {
       "name": "agrica-benchmark",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "4178", "--directory", "C:\\Users\\PaulMARTINCHAN\\Documents\\Absis Conseil\\Benchmark outils AGRICA\\agrica-benchmark"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4178",
+        "--directory",
+        "C:\\Users\\PaulMARTINCHAN\\Documents\\Absis Conseil\\Benchmark outils AGRICA\\agrica-benchmark"
+      ],
       "port": 4178
+    },
+    {
+      "name": "benchmark-demo-test",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4180",
+        "--directory",
+        "C:\\Users\\PaulMARTINCHAN\\Documents\\Absis Conseil\\Test Apps Creation\\benchmark-demo-test"
+      ],
+      "port": 4180
     },
     {
       "name": "absis-site-web",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "4179", "--directory", "C:\\Users\\PaulMARTINCHAN\\Documents\\Absis Conseil\\site web"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4179",
+        "--directory",
+        "C:\\Users\\PaulMARTINCHAN\\Documents\\Absis Conseil\\site web"
+      ],
       "port": 4179
     }
   ]

@@ -1,0 +1,16 @@
+[build]
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# Les données changent à chaque mise à jour du benchmark : on interdit leur mise en cache,
+# sinon un visiteur qui revient voit l'ancienne version. Le style et le moteur, eux, bougent
+# rarement — on les laisse au cache par défaut.
+[[headers]]
+  for = "/data/config.js"
+  [headers.values]
+    Cache-Control = "no-cache, must-revalidate"

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accueil — Benchmark</title>
+<script>document.documentElement.classList.remove('no-js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="Accueil">
+<div id="layout-head"></div>
+
+<section class="hero full">
+  <div class="halo halo-teal" style="width:900px;height:900px;top:-420px;left:-260px;opacity:.13"></div>
+  <div class="halo halo-gold" style="width:520px;height:520px;top:-190px;right:-140px;opacity:.11"></div>
+  <div class="halo halo-gold" style="width:310px;height:310px;bottom:-70px;right:20%;opacity:.07"></div>
+  <div class="content-wrap hero-inner">
+    <span class="section-eyebrow">ABSIS Conseil · Étude comparative</span>
+    <h1 data-bm="accroche"></h1>
+    <span class="accent-line" style="margin:1.7rem 0 1.9rem"></span>
+    <p class="hero-sub" data-bm="sousTitre"></p>
+    <p class="hero-ctx" data-bm="contexte"></p>
+    <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.9rem">
+      <a class="btn-primary" href="outils.html">Explorer les <span data-n="outils"></span> outils →</a>
+      <a class="btn-ghost" href="comparatif.html">Analyse &amp; recommandation</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats-band">
+  <div class="content-wrap">
+    <div class="stats-grid" id="stats"></div>
+  </div>
+</div>
+
+<section>
+  <div class="content-wrap">
+    <span class="section-eyebrow">Par où commencer</span>
+    <h2 class="section-title"><span data-nc="paliers"></span> paliers, dans cet ordre</h2>
+    <p class="section-lead">Aucune organisation n'outille tout d'un coup. Ces
+       <span data-n="paliers" data-mot></span> paliers se construisent l'un après l'autre —
+       chacun apporte une valeur autonome.</p>
+    <div class="tier-grid" id="paliers"></div>
+  </div>
+</section>
+
+<section class="sec-sand">
+  <div class="content-wrap">
+    <span class="section-eyebrow">Le panorama</span>
+    <h2 class="section-title"><span data-nc="familles"></span> familles, <span data-n="familles" data-mot></span> usages</h2>
+    <p class="section-lead">Les outils sont regroupés par <strong id="axe-lbl"></strong>.
+       Un outil d'une famille ne remplace pas celui d'une autre : ils se complètent.</p>
+    <div class="tool-grid" id="familles"></div>
+  </div>
+</section>
+
+<section>
+  <div class="content-wrap">
+    <span class="section-eyebrow">Méthode</span>
+    <h2 class="section-title">Comment lire ce benchmark</h2>
+    <hr class="divider-teal">
+    <div class="fv-grid">
+      <div class="reveal">
+        <h3 style="font-family:var(--serif);font-size:1.15rem;color:var(--navy);margin-bottom:.7rem">
+          Les critères d'évaluation</h3>
+        <p style="opacity:.65;font-size:.92rem">Chaque outil est noté sur les axes suivants.
+           Le radar sert à comparer des <em>profils</em>, jamais à désigner un vainqueur.</p>
+        <ul class="clean" id="crit-list"></ul>
+      </div>
+      <div class="reveal">
+        <h3 style="font-family:var(--serif);font-size:1.15rem;color:var(--navy);margin-bottom:.7rem">
+          La fiabilité des données</h3>
+        <p style="opacity:.65;font-size:.92rem">Chaque information porte un badge indiquant son statut.
+           Un trou reste un trou : rien n'est comblé par une valeur plausible.</p>
+        <div id="badge-legend" style="display:flex;flex-direction:column;gap:.7rem;margin-top:1rem"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="layout-foot"></div>
+<script src="data/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+function pageInit(){
+  var os=outils(), gs=B.meta.groupes||[];
+  document.getElementById('axe-lbl').textContent = B.meta.axeRegroupement||'';
+
+  /* stats */
+  var stats=[[os.length,'outils évalués'],[gs.length,'familles d\'outils'],
+             [criteres().length,'critères d\'évaluation'],[finalistes().length,'outils retenus']];
+  document.getElementById('stats').innerHTML = stats.map(function(s){
+    return '<div class="stat-cell"><div class="stat-number">'+s[0]+'</div>'+
+           '<p class="stat-label">'+s[1]+'</p></div>';
+  }).join('');
+
+  /* 3 paliers */
+  document.getElementById('paliers').innerHTML = (B.meta.ambitions||[]).map(function(a,i){
+    var chips=(a.outils||[]).map(function(id){
+      var o=getOutil(id); if(!o) return '';
+      var g=groupe(o.groupe);
+      return '<a class="pill-famille" style="background:'+g.couleur+'" href="outil.html?id='+o.id+'">'+o.nom+'</a>';
+    }).join('');
+    return '<div class="tier-card reveal'+(i?' tier-step-'+(i+1):'')+'">'+
+      '<div class="tier-num">'+(i+1)+'</div>'+
+      '<p class="tier-label">Palier '+(i+1)+'</p>'+
+      '<h3 class="tier-title">'+a.titre+'</h3>'+
+      '<p class="tier-desc">'+a.texte+'</p>'+
+      '<div style="display:flex;flex-wrap:wrap;gap:.4rem">'+chips+'</div></div>';
+  }).join('');
+
+  /* familles */
+  document.getElementById('familles').innerHTML = gs.map(function(g){
+    var dans=os.filter(function(o){return o.groupe===g.id;});
+    return '<div class="card reveal" style="background:'+(g.bg||'#fff')+
+      ';border-top:3px solid '+g.couleur+'">'+
+      '<h3 style="font-family:var(--serif);font-size:1.08rem;color:var(--navy);margin-bottom:.2rem">'+g.label+'</h3>'+
+      '<p style="font-size:.74rem;opacity:.55;margin:0 0 .85rem">'+dans.length+' outil'+(dans.length>1?'s':'')+'</p>'+
+      '<div style="display:flex;flex-wrap:wrap;gap:.4rem">'+dans.map(function(o){
+        return '<a class="pill-famille" style="background:'+g.couleur+'" href="outil.html?id='+o.id+'">'+o.nom+'</a>';
+      }).join('')+'</div></div>';
+  }).join('');
+
+  /* critères + badges */
+  document.getElementById('crit-list').innerHTML = criteres().map(function(c){
+    return '<li><strong style="color:var(--navy)">'+c.label+'</strong> — '+(c.desc||'')+'</li>';
+  }).join('');
+  document.getElementById('badge-legend').innerHTML = ((B.fiabilite||{}).badges||[]).map(function(b){
+    return '<div style="display:flex;align-items:center;gap:.7rem">'+renderBadge(b.id)+
+      '<span style="font-size:.84rem;opacity:.7">'+(b.desc||'')+'</span></div>';
+  }).join('');
+}
+</script>
+</body>
+</html>

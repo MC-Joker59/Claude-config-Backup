@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche outil</title>
+<script>document.documentElement.classList.remove('no-js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="">
+<div id="layout-head"></div>
+<div id="page"></div>
+<div id="layout-foot"></div>
+
+<script src="data/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+function pageInit(){
+  var o=getOutil(getParam('id')), el=document.getElementById('page');
+
+  if(!o){
+    el.innerHTML='<section><div class="content-wrap narrow" style="text-align:center;padding:3rem 0">'+
+      '<h1 class="section-title">Outil introuvable</h1>'+
+      '<p class="section-lead" style="margin:1rem auto 2rem">Cet identifiant ne correspond à aucun outil.</p>'+
+      '<a class="btn-primary" href="outils.html">← Retour au catalogue</a></div></section>';
+    return;
+  }
+
+  document.title=o.nom+' — '+(B.meta.titre||'Benchmark');
+  var g=groupe(o.groupe), moy=moyenne(o), f=o.fiche||{}, rec=estFinaliste(o.id);
+  var os=outils(), i=os.indexOf(o), prev=os[i-1], next=os[i+1];
+
+  /* ---------- HERO ---------- */
+  var h='<section class="hero" style="padding:3.6rem 0 3.2rem;background:linear-gradient(125deg,var(--navy) 0%,'+
+    g.couleur+' 170%)">'+
+    '<div class="halo halo-gold" style="width:430px;height:430px;top:-200px;right:-120px;opacity:.12"></div>'+
+    '<div class="content-wrap hero-inner">'+
+      '<p class="breadcrumb"><a href="index.html">Accueil</a><span class="breadcrumb-sep">·</span>'+
+        '<a href="outils.html">Outils</a><span class="breadcrumb-sep">·</span>'+esc(o.nom)+'</p>'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:1.6rem;flex-wrap:wrap">'+
+        '<div>'+
+          '<div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.7rem;flex-wrap:wrap">'+
+            '<span class="pill-famille" style="background:rgba(255,255,255,.16)">'+esc(g.label)+'</span>'+
+            (rec?'<span class="recommande-badge" style="position:static">Retenu</span>':'')+
+            renderBadge(o.fiabilite)+'</div>'+
+          '<h1 style="font-size:clamp(2.1rem,5vw,3.5rem)">'+esc(o.nom)+'</h1>'+
+          '<p style="margin:.7rem 0 0;color:#C4D3E3;font-size:.9rem">'+esc(o.editeur)+
+            (f.annee?' · depuis '+esc(f.annee):'')+(f.licence?' · '+esc(f.licence):'')+'</p>'+
+        '</div>'+
+        (estNote(o)?'<div style="text-align:right">'+
+          '<div style="font-family:var(--serif);font-weight:700;font-size:2.6rem;color:var(--gold);line-height:1">'+
+          fmt(moy)+'<span style="font-size:1rem;color:#9FB4CB;font-family:var(--sans)">/'+ECH.max+'</span></div>'+
+          (ECH.max<=5?'<div style="margin-top:.3rem">'+renderStars(Math.round(moy*2)/2)+'</div>':'')+'</div>':'')+
+      '</div>'+
+      (f.tagline?'<p class="hero-sub" style="margin-top:1.5rem">'+esc(f.tagline)+'</p>':'')+
+    '</div></section>';
+
+  h+='<section><div class="content-wrap">';
+  h+='<div class="pitch-encart"><p class="pitch-text">'+esc(o.positionnement)+'</p></div>';
+
+  /* ---------- ÉVALUATION + RADAR ---------- */
+  if(estNote(o)){
+    h+='<hr class="divider-teal">'+
+      '<span class="section-eyebrow">L\'évaluation</span>'+
+      '<h2 class="section-title" style="font-size:1.6rem">Notes par critère</h2>'+
+      '<div class="radar-layout" style="grid-template-columns:1fr 1fr;margin-top:1.5rem">'+
+        '<div>'+critereList(o)+'</div>'+
+        '<div class="radar-right" style="padding:0"><div style="max-width:380px;width:100%">'+
+          radarSVG([o])+'</div></div>'+
+      '</div>';
+  }
+
+  /* ---------- INCOMPATIBILITÉS (contraintes projet × prérequis outil) ---------- */
+  var incomp = incompatibilitesBloc(o);
+  if(incomp) h+='<div style="margin-top:1.5rem">'+incomp+'</div>';
+
+  /* ---------- FORCES / VIGILANCES / PRÉREQUIS ---------- */
+  var prereq = prerequisBloc(o);
+  if((o.forces||[]).length||(o.vigilances||[]).length||prereq){
+    h+='<hr class="divider-teal">'+
+      '<span class="section-eyebrow">Le jugement</span>'+
+      '<h2 class="section-title" style="font-size:1.6rem;margin-bottom:1.8rem">Forces &amp; vigilances</h2>'+
+      '<div class="fv-grid">'+fvBloc(o.forces,'force')+fvBloc(o.vigilances,'vig')+'</div>'+
+      (prereq? '<div style="margin-top:2rem;max-width:52ch">'+prereq+'</div>' : '');
+  }
+
+  /* ---------- CONTEXTE ---------- */
+  if(f.contexte){
+    h+='<hr class="divider-teal">'+
+      '<span class="section-eyebrow">Cas d\'usage type</span>'+
+      '<h2 class="section-title" style="font-size:1.6rem;margin-bottom:1.4rem">Dans quel contexte il s\'impose</h2>'+
+      contexteBloc(f.contexte);
+  }
+
+  /* ---------- FEUILLE DE ROUTE + COÛTS ---------- */
+  if((f.roadmap||[]).length||f.couts){
+    h+='<hr class="divider-teal">'+
+      '<span class="section-eyebrow">Mise en œuvre</span>'+
+      '<h2 class="section-title" style="font-size:1.6rem;margin-bottom:1.6rem">Déploiement &amp; coûts</h2>'+
+      '<div class="fv-grid">'+
+        ((f.roadmap||[]).length?'<div><h3 class="fv-title">Feuille de route</h3>'+roadmapList(f.roadmap)+'</div>':'')+
+        (f.couts?'<div class="card card-sand"><h3 class="fv-title" style="margin-bottom:.9rem">Postes de dépense</h3>'+
+          coutsBloc(f.couts)+'</div>':'')+
+      '</div>';
+  }
+
+  /* ---------- MARCHÉ ---------- */
+  var secs=[];
+  if(f.marche)       secs.push(['Position sur le marché',f.marche]);
+  if(f.ecosysteme)   secs.push(['Écosystème',f.ecosysteme]);
+  if(f.integrations) secs.push(['Intégrations',f.integrations]);
+  if(f.formations)   secs.push(['Formation &amp; montée en compétence',f.formations]);
+  if(secs.length){
+    h+='<hr class="divider-teal">'+
+      '<span class="section-eyebrow">Le contexte marché</span>'+
+      '<h2 class="section-title" style="font-size:1.6rem;margin-bottom:1.6rem">À savoir avant de choisir</h2>'+
+      '<div class="fv-grid">'+secs.map(function(s){
+        return '<div class="card reveal"><h4 style="font-family:var(--serif);font-size:1.05rem;'+
+          'color:var(--navy);margin-bottom:.5rem">'+s[0]+'</h4>'+
+          '<p style="margin:0;font-size:.88rem;opacity:.68">'+esc(s[1])+'</p></div>';
+      }).join('')+'</div>';
+  }
+
+  /* ---------- ALTERNATIVES ---------- */
+  if((f.alternatives||[]).length){
+    h+='<hr class="divider-teal">'+
+      '<span class="section-eyebrow">Si ce n\'est pas le bon choix</span>'+
+      '<h2 class="section-title" style="font-size:1.6rem;margin-bottom:1.2rem">Alternatives à considérer</h2>'+
+      '<div class="table-scroll"><table><thead><tr><th>Alternative</th><th>En quoi elle diffère</th></tr></thead><tbody>'+
+      f.alternatives.map(function(a){
+        return '<tr><td><strong>'+esc(a.nom)+'</strong></td><td style="opacity:.7">'+esc(a.note)+'</td></tr>';
+      }).join('')+'</tbody></table></div>'+
+      '<p class="empty" style="font-size:.8rem;margin-top:.8rem">Ces alternatives ne sont pas évaluées '+
+      'dans ce benchmark — mention indicative.</p>';
+  }
+
+  /* ---------- LIENS + NAV ---------- */
+  h+='<hr class="divider-teal"><div style="display:flex;gap:.7rem;flex-wrap:wrap">'+
+    (o.site?'<a class="btn-primary" href="'+o.site+'" target="_blank" rel="noopener">Site éditeur ↗</a>':'')+
+    '<a class="btn-primary" style="background:var(--navy);color:var(--cream)" href="comparatif.html">'+
+    'Analyse &amp; recommandation</a></div>';
+
+  h+='<div style="display:flex;justify-content:space-between;gap:1rem;margin-top:2.8rem;padding-top:1.6rem;'+
+     'border-top:1px solid rgba(14,42,71,.08);font-size:.86rem">'+
+    (prev?'<a class="outil-link" href="outil.html?id='+prev.id+'">← '+esc(prev.nom)+'</a>':'<span></span>')+
+    (next?'<a class="outil-link" href="outil.html?id='+next.id+'">'+esc(next.nom)+' →</a>':'<span></span>')+
+    '</div></div></section>';
+
+  el.innerHTML=h;
+}
+</script>
+</body>
+</html>

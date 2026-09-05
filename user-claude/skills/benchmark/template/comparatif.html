@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analyse &amp; Reco</title>
+<script>document.documentElement.classList.remove('no-js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="Analyse & Reco">
+<div id="layout-head"></div>
+
+<section class="hero" style="padding:4.2rem 0 3.6rem">
+  <div class="halo halo-teal" style="width:580px;height:580px;top:-270px;left:-160px;opacity:.12"></div>
+  <div class="halo halo-gold" style="width:420px;height:420px;top:-160px;right:-110px;opacity:.1"></div>
+  <div class="content-wrap hero-inner">
+    <p class="breadcrumb"><a href="index.html">Accueil</a><span class="breadcrumb-sep">·</span>Analyse &amp; Reco</p>
+    <span class="section-eyebrow">Analyse comparative</span>
+    <h1 style="font-size:clamp(2rem,4.6vw,3.4rem)">Analyse &amp; <em>recommandation</em></h1>
+    <span class="accent-line" style="margin:1.2rem 0"></span>
+    <p class="hero-ctx" style="margin:0">Deux lectures des <span data-n="outils"></span> outils — par famille, puis par profil de notes —
+       puis la sélection que nous retiendrions et ses réserves.</p>
+  </div>
+</section>
+
+<!-- ============ ANALYSE ============ -->
+<section>
+  <div class="content-wrap">
+    <span class="section-eyebrow">Première partie</span>
+    <h2 class="section-title">L'analyse</h2>
+    <p class="section-lead">Deux angles complémentaires : le panorama par famille d'usage,
+       et la comparaison des profils sur les critères d'évaluation.</p>
+
+    <div class="view-toggle" role="group" aria-label="Choix de la vue">
+      <button class="toggle-btn active" id="btn-familles" aria-pressed="true" onclick="setView('familles')">Par famille</button>
+      <button class="toggle-btn" id="btn-radar" aria-pressed="false" onclick="setView('radar')">Radar comparatif</button>
+    </div>
+
+    <!-- VUE 1 -->
+    <div class="view-section active" id="view-familles" style="margin-top:2.5rem">
+      <div id="familles-list"></div>
+    </div>
+
+    <!-- VUE 2 -->
+    <div class="view-section" id="view-radar" style="margin-top:2.5rem">
+      <div class="radar-layout">
+        <aside class="radar-selector">
+          <h3 class="radar-sel-title">Outils à comparer</h3>
+          <div class="radar-check-list" id="radar-checks"></div>
+        </aside>
+        <div class="radar-right">
+          <div id="radar-zone"></div>
+          <div id="radar-leg"></div>
+          <div id="crit-leg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LES N OUTILS RETENUS — masqué si aucun ============ -->
+<section class="sec-sand" id="sec-finalistes" style="display:none">
+  <div class="content-wrap">
+    <span class="section-eyebrow">La sélection</span>
+    <h2 class="section-title" id="fin-titre"></h2>
+    <p class="section-lead" id="fin-chapeau"></p>
+    <div class="tier-grid" id="finalistes"></div>
+  </div>
+</section>
+
+<!-- ============ COUCHE 2 : matrice de couverture — masquée si inactive ============ -->
+<section id="sec-couche2" style="display:none">
+  <div class="content-wrap">
+    <span class="section-eyebrow">Le détail</span>
+    <h2 class="section-title" id="c2-titre"></h2>
+    <p class="section-lead" id="c2-chapeau"></p>
+    <div id="couche2"></div>
+  </div>
+</section>
+
+<!-- ============ RECOMMANDATION ============ -->
+<section>
+  <div class="content-wrap">
+    <span class="section-eyebrow">Notre position</span>
+    <h2 class="section-title">La recommandation</h2>
+    <hr class="divider-teal">
+    <div class="pitch-encart"><p class="pitch-text" id="avis"></p></div>
+
+    <h3 style="font-family:var(--serif);font-size:1.35rem;color:var(--navy);margin:3rem 0 1.3rem">
+      Points de vigilance transverses</h3>
+    <div class="tool-grid" id="transverses"></div>
+
+    <div class="fv-grid" style="margin-top:3rem">
+      <div>
+        <h3 style="font-family:var(--serif);font-size:1.2rem;color:var(--navy);margin-bottom:.9rem">
+          Ce qui relativise ce classement</h3>
+        <ul class="clean" id="nuances"></ul>
+      </div>
+      <div class="card card-sand">
+        <h3 style="font-family:var(--serif);font-size:1.2rem;color:var(--navy);margin-bottom:.7rem">
+          À vérifier avant toute décision</h3>
+        <ul class="clean" id="averifier"></ul>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--serif);font-size:1.35rem;color:var(--navy);margin:3rem 0 1rem">
+      Classement indicatif</h3>
+    <p style="opacity:.65;font-size:.92rem;max-width:62ch">Par moyenne des critères — un repère, jamais un
+       verdict : les profils sont trop différents pour se substituer l'un à l'autre.</p>
+    <div class="table-scroll" style="margin-top:1.2rem"><table id="tbl"></table></div>
+
+    <!-- Méthodologie — rendue seulement si meta.methodologie existe -->
+    <div id="methodo"></div>
+
+    <p style="margin-top:2.5rem">
+      <a class="btn-primary" href="arbitrage.html" style="background:var(--navy);color:var(--cream)">
+        Voir l'arbitrage par contexte →</a></p>
+  </div>
+</section>
+
+<div id="layout-foot"></div>
+<script src="data/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* ---- toggle de vues ---- */
+function setView(id){
+  document.querySelectorAll('.view-section').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.toggle-btn').forEach(function(b){
+    b.classList.remove('active'); b.setAttribute('aria-pressed','false');
+  });
+  document.getElementById('view-'+id).classList.add('active');
+  var btn=document.getElementById('btn-'+id);
+  btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
+  if(id==='radar') drawRadar();
+  initReveal();
+}
+
+/* ---- radar ---- */
+function selection(){
+  return outils().filter(function(o){
+    var cb=document.getElementById('chk-'+o.id); return cb && cb.checked;
+  });
+}
+function drawRadar(){
+  var sel=selection();
+  document.getElementById('radar-zone').innerHTML = sel.length ? radarSVG(sel)
+    : '<p class="empty">Sélectionnez au moins un outil.</p>';
+  document.getElementById('radar-leg').innerHTML = sel.length ? radarLegend(sel) : '';
+  document.getElementById('crit-leg').innerHTML = criteresLegende();
+  memoriserSelection(sel);
+}
+
+/* La sélection est écrite dans l'URL (?outils=a,b,c) : elle survit à un rafraîchissement
+   et peut être mise en favori. Le partage à un tiers ne fonctionne toutefois que si
+   l'app est déployée — une URL localhost ne s'ouvre pas chez quelqu'un d'autre. */
+function memoriserSelection(sel){
+  var q = sel.map(function(o){return o.id;}).join(',');
+  var url = location.pathname + (q ? '?outils='+q : '');
+  history.replaceState(null, '', url);
+}
+function selectionDepuisURL(){
+  var p = new URLSearchParams(location.search).get('outils');
+  if(!p) return null;
+  var ids = p.split(',').filter(function(id){ return !!getOutil(id); });
+  return ids.length ? ids : null;
+}
+function buildSelector(){
+  /* les outils retenus d'abord */
+  var ordre=outils().slice().sort(function(a,b){
+    return (estFinaliste(b.id)?1:0)-(estFinaliste(a.id)?1:0);
+  });
+  /* Pré-cochage : l'URL si elle en porte une, sinon les outils retenus, sinon —
+     s'il n'y a pas de sélection éditoriale — les outils évalués (4 max pour rester lisible).
+     Sans ce repli, un benchmark sans finalistes afficherait un radar vide au chargement. */
+  var depuisURL = selectionDepuisURL();
+  var parDefaut = finalistes().length
+    ? outils().filter(function(o){ return estFinaliste(o.id); }).map(function(o){ return o.id; })
+    : outils().filter(estNote).slice(0,4).map(function(o){ return o.id; });
+  document.getElementById('radar-checks').innerHTML = ordre.map(function(o){
+    /* coche = état de sélection (URL ou défaut) · retenu = mise en valeur du libellé */
+    var coche  = (depuisURL || parDefaut).indexOf(o.id) > -1;
+    var retenu = estFinaliste(o.id);
+    return '<label class="radar-item">'+
+      '<input type="checkbox" id="chk-'+o.id+'"'+(coche?' checked':'')+'>'+
+      '<span class="radar-dot" style="background:'+radarColor(o.id)+'"></span>'+
+      '<span class="radar-item-label'+(retenu?' is-rec':'')+'">'+o.nom+'</span></label>';
+  }).join('');
+  document.querySelectorAll('#radar-checks input').forEach(function(cb){
+    cb.addEventListener('change', drawRadar);
+  });
+}
+
+function pageInit(){
+  var os=outils();
+
+  /* --- VUE 1 : par famille --- */
+  document.getElementById('familles-list').innerHTML = (B.meta.groupes||[]).map(function(g){
+    var dans=os.filter(function(o){return o.groupe===g.id;});
+    if(!dans.length) return '';
+    return '<div style="margin-bottom:2.8rem">'+
+      '<div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1.1rem">'+
+        '<span class="pill-famille" style="background:'+g.couleur+'">'+g.label+'</span>'+
+        '<span style="font-size:.78rem;opacity:.5">'+dans.length+' outil'+(dans.length>1?'s':'')+'</span>'+
+      '</div>'+
+      '<div class="tool-grid">'+dans.map(carteOutil).join('')+'</div></div>';
+  }).join('');
+
+  /* --- VUE 2 : radar --- */
+  buildSelector();
+
+  /* --- finalistes (section masquée si la sélection est vide) --- */
+  var F=B.finalistes||{};
+  if(finalistes().length){
+    document.getElementById('sec-finalistes').style.display='';
+    document.getElementById('fin-titre').textContent = F.titre||'Les outils retenus';
+    document.getElementById('fin-chapeau').textContent = F.chapeau||'';
+    document.getElementById('finalistes').innerHTML = finalistes().map(tierCard).join('');
+  }
+
+  /* --- couche 2 : matrice de couverture (masquée si inactive) --- */
+  var c2 = couche2Bloc();
+  if(c2){
+    var C=B.couche2||{};
+    document.getElementById('sec-couche2').style.display='';
+    document.getElementById('c2-titre').textContent = C.titre||'Couverture détaillée';
+    document.getElementById('c2-chapeau').textContent = C.chapeau||'';
+    document.getElementById('couche2').innerHTML = c2;
+  }
+
+  /* --- reco --- */
+  var r=B.recommandation||{};
+  document.getElementById('avis').textContent = r.avis||'';
+  document.getElementById('nuances').innerHTML=(r.nuances||[]).map(function(n){return '<li>'+n+'</li>';}).join('');
+  document.getElementById('averifier').innerHTML=(r.aVerifier||[]).map(function(n){return '<li>'+n+'</li>';}).join('');
+  document.getElementById('transverses').innerHTML=(r.vigilancesTransverses||[]).map(function(v){
+    return '<div class="card reveal" style="border-top:3px solid var(--gold)">'+
+      '<h4 style="font-family:var(--serif);font-size:1.08rem;color:var(--navy);margin-bottom:.5rem">'+v.titre+'</h4>'+
+      '<p style="margin:0;font-size:.88rem;opacity:.68">'+v.texte+'</p></div>';
+  }).join('');
+
+  /* --- méthodologie (dégradation propre : rien si absente) --- */
+  document.getElementById('methodo').innerHTML = sectionSi(
+    methodoBloc(), 'Méthodologie', 'Comment ces notes ont été établies',
+    'Un benchmark ne vaut que par la transparence de sa méthode : voici qui a évalué, '+
+    'sur quelle grille, et ce que ces notes ne permettent pas de conclure.', true);
+
+  /* --- classement --- */
+  var notes=os.filter(estNote).slice().sort(function(a,b){return moyenne(b)-moyenne(a);});
+  var head='<thead><tr><th class="num">#</th><th>Outil</th><th>Famille</th>'+
+    criteres().map(function(c){return '<th class="num">'+(c.court||c.label)+'</th>';}).join('')+
+    '<th class="num">Moyenne</th><th>Retenu</th></tr></thead>';
+  document.getElementById('tbl').innerHTML = head+'<tbody>'+notes.map(function(o,i){
+    var g=groupe(o.groupe);
+    return '<tr'+(estFinaliste(o.id)?' class="is-first"':'')+'>'+
+      '<td class="num"><strong style="color:var(--gold-dk)">'+(i+1)+'</strong></td>'+
+      '<td><a href="outil.html?id='+o.id+'"><strong>'+o.nom+'</strong></a></td>'+
+      '<td><span class="pill-famille" style="background:'+g.couleur+'">'+g.label+'</span></td>'+
+      criteres().map(function(c){
+        var v=o.notes[c.id];
+        return '<td class="num">'+(v==null?'—':fmt(v,0))+'</td>';
+      }).join('')+
+      '<td class="num"><strong>'+fmt(moyenne(o))+'</strong></td>'+
+      '<td>'+(estFinaliste(o.id)?'<span class="recommande-badge" style="position:static">Retenu</span>':'')+'</td></tr>';
+  }).join('')+'</tbody>';
+}
+</script>
+</body>
+</html>

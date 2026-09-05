@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arbitrage</title>
+<script>document.documentElement.classList.remove('no-js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="Arbitrage">
+<div id="layout-head"></div>
+
+<section class="hero" style="padding:4rem 0 3.4rem">
+  <div class="halo halo-gold" style="width:520px;height:520px;top:-230px;right:-130px;opacity:.11"></div>
+  <div class="content-wrap hero-inner">
+    <p class="breadcrumb"><a href="index.html">Accueil</a><span class="breadcrumb-sep">·</span>Arbitrage</p>
+    <span class="section-eyebrow">Grille neutre</span>
+    <h1 style="font-size:clamp(2rem,4.5vw,3.2rem)">Selon votre <em>contexte</em></h1>
+    <span class="accent-line" style="margin:1.2rem 0"></span>
+    <p class="hero-ctx" style="margin:0">À chaque besoin correspond l'outil le plus adapté.
+       Aucun palmarès ici — l'avis engagé du cabinet est sur la page <a href="comparatif.html" style="color:var(--gold)">Analyse &amp; Reco</a>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="content-wrap">
+    <!-- Le cadre imposé — rendu seulement si meta.contraintes est renseigné -->
+    <div id="cadre"></div>
+
+    <span class="section-eyebrow">Par besoin</span>
+    <h2 class="section-title" style="font-size:1.5rem;margin-bottom:1.5rem"><span data-nc="scenarios"></span> situations, <span data-n="scenarios" data-mot></span> réponses</h2>
+    <div class="tool-grid" id="scenarios"></div>
+
+    <hr class="divider-teal">
+    <span class="section-eyebrow">Synthèse</span>
+    <h2 class="section-title" style="font-size:1.5rem;margin-bottom:1rem">Vue d'ensemble</h2>
+    <div class="table-scroll"><table id="tbl"></table></div>
+
+    <!-- Mot de la fin — rendu seulement si arbitrage.synthese est renseigné -->
+    <div id="synthese"></div>
+  </div>
+</section>
+
+<div id="layout-foot"></div>
+<script src="data/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+function pageInit(){
+  var sc=(B.arbitrage||{}).scenarios||[];
+
+  /* Le cadre imposé : les contraintes du projet filtrent AVANT toute comparaison.
+     Dégradation propre : rien ne s'affiche si aucune contrainte n'a été communiquée. */
+  var cadre=document.getElementById('cadre');
+  cadre.innerHTML = sectionSi(cadreImposeBloc(), 'Préalable', 'Le cadre imposé',
+    'Ces contraintes s\'appliquent avant toute comparaison : un outil qui n\'y répond pas est '+
+    'écarté, quelle que soit sa note. Elles expliquent les mentions « incompatible » sur les fiches.',
+    false);
+  if(cadre.innerHTML) cadre.innerHTML += '<hr class="divider-teal">';
+
+  document.getElementById('scenarios').innerHTML = sc.map(function(s){
+    var o=getOutil(s.outil); if(!o) return '';
+    var g=groupe(o.groupe);
+    return '<div class="card reveal" style="border-top-color:'+g.couleur+'">'+
+      '<span class="section-eyebrow">Si votre besoin est</span>'+
+      '<h3 style="font-size:1.2rem;color:var(--navy);margin-bottom:.9rem">'+s.besoin+'</h3>'+
+      '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem">'+
+        '<span style="color:var(--gold-dk);font-weight:800">→</span>'+
+        '<a class="pill-famille" style="background:'+g.couleur+'" href="outil.html?id='+o.id+'">'+o.nom+'</a>'+
+        (estNote(o)? '<span class="score-val">'+fmt(moyenne(o))+'/'+ECH.max+'</span>':'')+
+      '</div>'+
+      '<p style="margin:0;font-size:.9rem;color:var(--muted)">'+s.pourquoi+'</p></div>';
+  }).join('');
+
+  var head='<thead><tr><th>Besoin / contexte</th><th>Outil indiqué</th><th>Famille</th><th class="num">Moyenne</th></tr></thead>';
+  var rows=sc.map(function(s){
+    var o=getOutil(s.outil); if(!o) return '';
+    var g=groupe(o.groupe), m=moyenne(o);
+    return '<tr><td>'+s.besoin+'</td>'+
+      '<td><a href="outil.html?id='+o.id+'"><strong>'+o.nom+'</strong></a></td>'+
+      '<td><span class="pill-famille" style="background:'+g.couleur+'">'+g.label+'</span></td>'+
+      '<td class="num">'+(m!=null? '<strong>'+fmt(m)+'</strong> <span style="color:var(--muted);font-size:.78rem">/'+
+        ECH.max+'</span>' : '<span class="empty">non évalué</span>')+'</td></tr>';
+  }).join('');
+  document.getElementById('tbl').innerHTML=head+'<tbody>'+rows+'</tbody>';
+
+  /* Mot de la fin (dégradation propre si absent de la config) */
+  var sy=(B.arbitrage||{}).synthese;
+  document.getElementById('synthese').innerHTML = sy
+    ? '<hr class="divider-teal"><div class="pitch-encart">'+
+      '<p style="font-family:var(--serif);font-weight:700;color:var(--navy);font-size:1.05rem;'+
+      'margin:0 0 .4rem">'+esc(sy.titre)+'</p>'+
+      '<p style="margin:0;color:var(--muted);font-size:.94rem">'+esc(sy.texte)+'</p></div>'
+    : '';
+}
+</script>
+</body>
+</html>
