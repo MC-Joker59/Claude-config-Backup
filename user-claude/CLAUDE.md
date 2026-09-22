@@ -10,7 +10,7 @@
 When the user types `/graphify`, invoke the Skill tool with `skill: "graphify"` before doing anything else.
 
 # Base de connaissances — Wiki Absis (second cerveau de Paul)
-Vault Obsidian (plugin claude-obsidian) situé à : `C:\Users\PaulMARTINCHAN\Documents\Absis Conseil\Second Brain\`
+Vault Obsidian (plugin claude-obsidian) situé à : `~/Documents/Absis Conseil/Second Brain/`
 
 Ce wiki centralise les projets de Paul : missions **ABSIS Conseil** (AGRICA/capacitaire, Abeille & BPCE Vie/actif UC, benchmark outils de test, apps Claude Code) et **IÉSEG Conseil** (Junior-Entreprise, pôle Q&P, cas Actico & Typology).
 

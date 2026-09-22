@@ -1,110 +1,165 @@
-# Sauvegarde de la config Claude / Claude Code — mode d'emploi
+# Sauvegarde de la config Claude Code — mode d'emploi
 
-Ce dossier contient **tout ce qu'il faut pour que Claude Code fonctionne à l'identique**
-sur un nouvel ordinateur, **même avec un nouveau compte Claude** (nouvelle adresse mail).
+Ce dossier contient **tout ce qu'il faut pour que Claude Code fonctionne à l'identique** sur une
+nouvelle machine, **même avec un nouveau compte Claude** (nouvelle adresse mail).
 
-> Rien de la config Claude n'est stocké côté serveur : tout est dans des fichiers locaux.
+> **Rien de la config Claude n'est stocké côté serveur : tout est dans des fichiers locaux.**
 > Changer de compte n'affecte **que** la connexion (login) et la facturation — pas la config.
+> Le risque n'est donc pas le changement de compte, c'est le changement de **machine** ou un disque qui lâche.
+
+**État : macOS** (migration Windows → MacBook Air effectuée le 2026-09-10).
+Dernière mise à jour de cette sauvegarde : **2026-09-22**.
 
 ---
 
 ## Contenu du dossier
 
 ```
-Claude-Config-Backup/
+Claude-config-Backup/
 ├── LISEZ-MOI-MIGRATION.md      ← ce fichier
-├── user-claude/               → à recopier dans  C:\Users\<user>\.claude\
-│   ├── CLAUDE.md               (instructions/contexte global)
+├── user-claude/               → à recopier dans  ~/.claude/
+│   ├── CLAUDE.md               (posture par défaut + pointeur vers le wiki Obsidian)
 │   ├── settings.json           (plugins activés + marketplaces → réinstall auto)
 │   ├── settings.local.json     (permissions autorisées)
-│   ├── mcp_servers.json         (serveurs MCP — n8n)
-│   ├── skills/                 (skills perso : graphify, llm-council, animations…)
-│   └── projects/               (MÉMOIRE = base de connaissance, par projet)
-├── project-claude/            → à recopier dans  <dossier projet "Claude Code">\.claude\
-│   ├── launch.json
+│   ├── mcp_servers.json        (serveur MCP n8n — clé API à remplir)
+│   ├── skills/                 (10 skills perso : benchmark, graphify, llm-council, animations, design…)
+│   └── projects/               (MÉMOIRE = ce que Claude retient sur toi, par projet)
+├── project-claude/            → à recopier dans  "~/Documents/Absis Conseil/Claude Code/.claude/"
+│   ├── launch.json             (serveurs de preview des apps de benchmark)
 │   └── settings.local.json
 └── benchmark-assets/          → contrat de données du skill /benchmark
     └── TEMPLATE_BENCHMARK_ABSIS.md
 ```
 
-> **Skill `/benchmark`** : inclus dans `user-claude/skills/benchmark/` (skill perso — personne ne
-> le réinstalle à ta place, contrairement aux plugins). Il référence le contrat de données
-> `TEMPLATE_BENCHMARK_ABSIS.md` : sur le nouveau PC, recopie-le depuis `benchmark-assets/` vers
-> `Documents\Absis Conseil\Claude Code\TEMPLATE_BENCHMARK_ABSIS.md`.
-> ⚠️ Les *implémentations de référence* (`benchmark-demo-test`, `absis-benchmark`,
-> `carnet-ordre-benchmark`…) vivent dans le dossier « Test Apps Creation » — à sauvegarder à part
-> (voir avec Claude si ce n'est pas déjà fait).
-
 ---
 
-## Ce qui N'EST PAS dans ce dossier (volontaire — à laisser se régénérer)
+## Ce qui N'EST PAS ici (volontaire — à laisser se régénérer)
 
-| Élément | Pourquoi il n'est pas là |
+| Élément | Pourquoi |
 |---|---|
-| `.credentials.json` | Jeton de l'ANCIEN compte. Inutile : on se reconnecte avec le nouveau mail. |
-| `.claude.json` | `machineID`/`userID` de l'ancien PC. Recréé automatiquement. |
-| `plugins/`, `cache/`, `sessions/`, `shell-snapshots/`, `telemetry/` | Caches régénérables. Les plugins se réinstallent seuls (voir étape 4). |
-| Transcripts de sessions (`*.jsonl`, ~295 Mo) | Historique brut des anciennes conversations. Non nécessaire au fonctionnement. Optionnel — voir plus bas. |
+| `.credentials.json` | Jeton de connexion. On se reconnecte avec le compte, un nouveau est créé. |
+| `.claude.json` | `machineID` / `userID` de l'ancienne machine. Recréé automatiquement. |
+| `plugins/`, `cache/`, `sessions/`, `shell-snapshots/`, `telemetry/`, `session-env/` | Caches régénérables. Les plugins se réinstallent seuls (étape 4). |
+| Transcripts de sessions (`*.jsonl`) | Historique brut des conversations. Inutile au fonctionnement — le savoir est dans le wiki et la mémoire. |
+| Mémoires des `scratch-workspaces` | Sessions « sans dossier », éphémères. |
 
 ---
 
-## Restauration sur le NOUVEAU PC — étape par étape
+## Restauration sur une NOUVELLE machine (macOS)
 
-1. **Installer Claude Code**, puis se **connecter avec le NOUVEAU compte** (nouvel email).
-   → un `.credentials.json` neuf est créé automatiquement. Ne pas y toucher.
+### 1. Outils de base
 
-2. **Copier `user-claude/`** : verser son contenu dans `C:\Users\<user>\.claude\`
-   (fusionner/écraser les fichiers par défaut par ceux d'ici).
+Homebrew (le mot de passe demandé est celui de la **session Mac** ; **rien ne s'affiche pendant la saisie**, c'est normal — taper à l'aveugle puis Entrée) :
 
-3. **Copier `project-claude/`** : verser son contenu dans le sous-dossier `.claude\`
-   du dossier de travail du projet (celui nommé « Claude Code »).
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
-4. **Relancer Claude Code.** Il lit `settings.json` et **réinstalle tout seul** les 3 plugins
-   depuis GitHub : `claude-obsidian`, `claude-seo`, `n8n-mcp-skills`. Rien à faire à la main.
+À la fin, exécuter les deux lignes affichées sous « **Next steps** » (elles ajoutent `brew` au PATH).
 
-5. **(si tu utilises n8n)** Rouvrir `~/.claude\mcp_servers.json` et remplacer
-   `YOUR_API_KEY_HERE` par ta vraie clé.
+```bash
+brew install gh && brew install --cask obsidian
+```
 
-6. **Vérifier** (voir checklist plus bas).
+### 2. Claude Code
 
-### ⚠️ Piège unique : le nom des dossiers de mémoire
+Installer, puis se connecter (nouveau compte accepté).
 
-La mémoire est rangée dans `projects/` sous un nom = chemin absolu du projet, ex :
-`C--Users-PaulMARTINCHAN-Documents-Absis-Conseil-Claude-Code`.
+### 3. Copier la config
 
-- Si sur le nouveau PC ton **utilisateur Windows reste `PaulMARTINCHAN`** et que tu remets
-  le projet au **même chemin** → la mémoire se recharge automatiquement. Rien à faire.
-- Si l'utilisateur ou le chemin **change** → lance d'abord une session Claude vide dans le
-  nouveau dossier projet (Claude créera le bon nom de dossier dans `projects/`), puis
-  dépose les fichiers `memory/*.md` de ce backup dans ce nouveau dossier.
+```bash
+cp -R user-claude/. ~/.claude/
+mkdir -p ~/Documents/"Absis Conseil"/"Claude Code"/.claude
+cp -R project-claude/. ~/Documents/"Absis Conseil"/"Claude Code"/.claude/
+cp benchmark-assets/TEMPLATE_BENCHMARK_ABSIS.md ~/Documents/"Absis Conseil"/"Claude Code"/
+```
+
+### 4. Redémarrer Claude Code — vraiment
+
+**`Cmd+Q` complet**, pas juste fermer la fenêtre. Au démarrage, l'app lit `settings.json` et
+**réinstalle seule** les 3 plugins depuis GitHub : `claude-obsidian`, `claude-seo`, `n8n-mcp-skills`.
+
+> ⚠️ Piège vécu le 2026-09-10 : modifier `settings.json` pendant que l'app tourne ne déclenche rien.
+> Le dossier `~/.claude/plugins/` reste vide (`{"plugins": {}}`) jusqu'au vrai redémarrage.
+
+### 5. Le wiki Obsidian (dépôt séparé)
+
+```bash
+gh auth login    # GitHub.com → HTTPS → Yes → Login with a web browser
+gh repo clone MC-Joker59/wiki-second-brain ~/Documents/"Absis Conseil"/"Second Brain"
+```
+
+Puis dans Obsidian : **Open folder as vault** → sélectionner `Second Brain`
+(**le dossier lui-même, pas le `wiki/` à l'intérieur** — sinon on perd le `.obsidian/` avec le thème et le snippet `vault-colors`).
+
+> ⚠️ Piège vécu : cliquer sur « Create new vault » au lieu de « Open folder as vault » crée un vault
+> vide et donne l'impression que le wiki est perdu. Il ne l'est pas.
+
+### 6. (si n8n) Remplir la clé API
+
+Dans `~/.claude/mcp_servers.json`, remplacer `YOUR_API_KEY_HERE`.
 
 ---
 
-## Le wiki Obsidian est séparé (déjà sauvegardé)
+## ⚠️ Le piège du nom de dossier de mémoire
 
-La base de connaissance **Obsidian** (vault « Second Brain ») n'est PAS dans ce backup :
-elle est sauvegardée à part sur GitHub (dépôt privé `MC-Joker59/wiki-second-brain`).
-Sur le nouveau PC : `git clone` du dépôt + « Ouvrir un dossier comme coffre » dans Obsidian.
-(Copie physique du dossier conseillée en complément.)
+La mémoire est rangée dans `projects/` sous un nom dérivé du **chemin absolu du projet**, les `/`
+remplacés par des `-` :
 
-La « mémoire » Claude (dans `projects/`) et le « wiki » Obsidian sont **deux choses distinctes** :
-la mémoire = ce que Claude retient sur toi ; le wiki = ta base documentaire.
+```
+~/Documents/Absis Conseil/Claude Code
+        ↓
+-Users-paulmartinchan-Documents-Absis-Conseil-Claude-Code
+```
 
----
-
-## (Optionnel) Récupérer aussi l'historique des conversations
-
-Non nécessaire pour que Claude fonctionne comme maintenant. Si tu y tiens quand même,
-copie en plus les fichiers `*.jsonl` depuis l'ancien
-`C:\Users\PaulMARTINCHAN\.claude\projects\...\` vers le même dossier du nouveau PC (~295 Mo).
+- **Même utilisateur macOS (`paulmartinchan`) + même chemin** → la mémoire se recharge seule. Rien à faire.
+- **Utilisateur ou chemin différents** → lancer d'abord une session Claude vide dans le nouveau dossier
+  projet (Claude crée le bon nom dans `projects/`), **puis** y déposer les fichiers `memory/*.md` de cette sauvegarde.
 
 ---
 
-## Checklist de vérification (nouveau PC)
+## Les deux dépôts, et ce qu'ils contiennent
 
-- [ ] Claude Code démarre, connecté au nouveau compte
-- [ ] Les 3 plugins apparaissent (obsidian, seo, n8n)
-- [ ] `/graphify` répond (skill perso présente)
-- [ ] Une session dans le dossier projet recharge la mémoire (profil Paul, préférences…)
-- [ ] Claude retrouve le contexte de tes projets (AGRICA, test apps, wiki…)
+| Dépôt | Contenu | Rythme de mise à jour |
+|---|---|---|
+| **`MC-Joker59/wiki-second-brain`** | Le **wiki** : base documentaire (~154 pages), `.raw/` des sources, `.obsidian/` | Poussé **à chaque ingestion** |
+| **`MC-Joker59/Claude-config-Backup`** | Cette **config** : instructions, skills, mémoire, réglages | À repousser **quand la config change** |
+
+> **Mémoire ≠ wiki.** La mémoire (`projects/*/memory/`) = ce que Claude retient **sur toi** (profil,
+> préférences, réflexes de travail). Le wiki = ta **base documentaire** (projets, méthodes, sources).
+> Les deux sont sauvegardés séparément et ne bougent pas au même rythme.
+
+### Rien n'est automatique
+
+Aucun des deux dépôts ne se synchronise tout seul. Pour pousser :
+
+```bash
+cd ~/Documents/"Absis Conseil"/"Second Brain" && git add -A && git commit -m "maj wiki" && git push
+```
+
+---
+
+## Checklist de vérification
+
+- [ ] Claude Code démarre, connecté
+- [ ] `~/.claude/plugins/installed_plugins.json` n'est plus vide → les 3 plugins sont là
+- [ ] `/graphify` et `/benchmark` répondent (skills perso présentes)
+- [ ] Une session ouverte dans `~/Documents/Absis Conseil/Claude Code` recharge la mémoire (profil Paul, préférences, réflexe wiki)
+- [ ] Obsidian ouvre le vault `Second Brain` et affiche `wiki/`, `_templates/`, `CLAUDE.md`
+- [ ] Claude retrouve le contexte des projets (ABSIS, IÉSEG Conseil, benchmarks)
 - [ ] (si n8n) clé API re-remplie
+
+---
+
+## ⚠️ GAP CONNU, TOUJOURS OUVERT
+
+Les **implémentations de référence des benchmarks** — `benchmark-demo-test`, `absis-benchmark`,
+`carnet-ordre-benchmark`, `actif-uc-benchmark`, `signature-electronique-benchmark` — vivaient dans
+`Documents\Absis Conseil\Test Apps Creation\` sur l'**ancien PC Windows**, dans un dépôt git **local
+sans remote** (0 remote, ~7 Mo, fichiers non commités).
+
+**Elles ne sont dans aucune sauvegarde et n'ont pas été transférées sur le Mac.**
+Le `launch.json` de `project-claude/` pointe vers leurs chemins macOS, mais les dossiers n'existent pas.
+
+→ **Si l'ancien PC est encore accessible, les récupérer et créer un 3ᵉ dépôt privé.**
+Signalé pour la première fois le 2026-09-05, toujours non traité au 2026-09-22.

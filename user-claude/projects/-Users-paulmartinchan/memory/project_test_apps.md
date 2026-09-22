@@ -7,7 +7,7 @@ metadata:
   originSessionId: 52d990ba-e6f4-4f81-92c9-ffcbb4c3a202
 ---
 
-Project folder: `C:\Users\PaulMARTINCHAN\Documents\Absis Conseil\Test Apps Creation\`
+Project folder: `~/Documents/Absis Conseil/Test Apps Creation/`
 
 Apps created so far:
 - `Mini-CRM\crm.html` — CRM app with modals, toasts, localStorage

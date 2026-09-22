@@ -16,7 +16,7 @@ Stack constraints (as of 2026-05-28):
 - Data persistence via `localStorage` only
 - External libraries loaded from CDN only
 
-Project folder: `C:\Users\PaulMARTINCHAN\Documents\Absis Conseil\Test Apps Creation\`
+Project folder: `~/Documents/Absis Conseil/Test Apps Creation/`
 
 **How to apply:** Always deliver complete, self-contained `.html` files. Never suggest npm install, pip, or a dev server. Default to vanilla JS + inline CSS unless a CDN library is clearly needed.
 

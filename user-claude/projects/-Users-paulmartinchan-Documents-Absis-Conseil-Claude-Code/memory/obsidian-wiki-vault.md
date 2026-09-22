@@ -7,7 +7,7 @@ metadata:
   originSessionId: fb862560-dcf4-40fe-a28c-6933833fc676
 ---
 
-Paul utilise le plugin Claude Code **claude-obsidian** (installé au scope user) avec un vault Obsidian « second cerveau ». ⚠️ **Chemin réel : `C:\Users\PaulMARTINCHAN\Documents\Absis Conseil\Second Brain\wiki`** (et NON `…\Wiki Absis` comme l'indique par erreur le CLAUDE.md global). Le vault contient `wiki/hot.md`, `wiki/index.md`, `wiki/log.md`, et les dossiers `projects/ domains/ entities/ concepts/ sources/ comparisons/`. Voir aussi `Second Brain/CLAUDE.md` (conventions du vault).
+Paul utilise le plugin Claude Code **claude-obsidian** (installé au scope user) avec un vault Obsidian « second cerveau ». ⚠️ **Chemin réel : `~/Documents/Absis Conseil/Second Brain/wiki`** (et NON `…/Wiki Absis` comme l'indique par erreur le CLAUDE.md global). Le vault contient `wiki/hot.md`, `wiki/index.md`, `wiki/log.md`, et les dossiers `projects/ domains/ entities/ concepts/ sources/ comparisons/`. Voir aussi `Second Brain/CLAUDE.md` (conventions du vault).
 
 - Mode D (second cerveau général), structure et pages rédigées **en français**.
 - Transport : accès direct au système de fichiers (PAS de MCP — v1.7+ du plugin).

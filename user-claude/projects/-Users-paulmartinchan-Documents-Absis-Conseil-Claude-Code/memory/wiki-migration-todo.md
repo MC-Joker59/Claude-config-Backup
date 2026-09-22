@@ -24,8 +24,8 @@ Paul prévoit (anticipé le 2026-06-29, sans date arrêtée) de **changer d'ordi
 **Why:** tout son savoir est dans des fichiers locaux ; un mauvais transfert = perte définitive.
 
 **How to apply:** rappeler les 3 paquets à transférer —
-1. **Vault** : dossier `C:\Users\PaulMARTINCHAN\Documents\Absis Conseil\Second Brain\` (autonome : `wiki/` + `.git` + `.obsidian`). Le copier en entier (sous-dossiers cachés compris).
-2. **Côté Claude** : `~/.claude/CLAUDE.md` + le dossier `memory/` du projet. La mémoire se recharge seule si le **chemin projet est identique** sur le nouveau PC (`...\Documents\Absis Conseil\Claude Code`), sinon déposer les fichiers dans le `memory/` du nouveau hash.
+1. **Vault** : dossier `~/Documents/Absis Conseil/Second Brain/` (autonome : `wiki/` + `.git` + `.obsidian`). Le copier en entier (sous-dossiers cachés compris).
+2. **Côté Claude** : `~/.claude/CLAUDE.md` + le dossier `memory/` du projet. La mémoire se recharge seule si le **chemin projet est identique** sur le nouveau PC (`.../Documents/Absis Conseil/Claude Code`), sinon déposer les fichiers dans le `memory/` du nouveau hash.
 3. **Outils réinstallables** : Claude Code (nouveau compte), Obsidian (puis « ouvrir dossier comme vault »), plugin `claude-obsidian`, skill `graphify`.
 
 Reco backup à faire dès que possible : **remote git privé** (`git remote add` + push, préserve l'historique) et/ou **zip daté**. Option : écrire `wiki/meta/MIGRATION.md` (runbook qui voyage avec le vault).
@@ -33,3 +33,9 @@ Reco backup à faire dès que possible : **remote git privé** (`git remote add`
 Paul a créé un **compte Obsidian avec son email perso**. Utile UNIQUEMENT s'il active **Obsidian Sync** (payant) : transfère le vault entre appareils, mais **PAS** le `CLAUDE.md`/la mémoire (hors vault) ni forcément l'historique `.git`. Donc complément possible, pas une solution complète → le git remote reste plus robuste.
 
 ⚠️ **Rien n'est stocké dans le compte Claude** : changer de compte ne fait rien perdre tant que les fichiers locaux sont transférés. Lié à [[obsidian-wiki-vault]].
+
+**MàJ 2026-09-10 — migration EFFECTUÉE vers un Mac (macOS, user `paulmartinchan`) :**
+- Restauré depuis `MC-Joker59/Claude-config-Backup` : `~/.claude/CLAUDE.md`, `settings.json` (plugins + marketplaces), `settings.local.json`, `mcp_servers.json`, `skills/` (10 skills dont `benchmark`, `graphify`), et les mémoires des 2 projets.
+- **Nouveaux chemins macOS** : vault = `~/Documents/Absis Conseil/Second Brain/`, dossier projet = `~/Documents/Absis Conseil/Claude Code/`. Dossier mémoire = `~/.claude/projects/-Users-paulmartinchan-Documents-Absis-Conseil-Claude-Code/memory/`.
+- `launch.json` réécrit en chemins macOS + `python3` (les dossiers `Test Apps Creation/` ne sont PAS encore sur le Mac — dépôt local sans remote sur l'ancien PC, GAP toujours ouvert).
+- Restent à faire côté Paul : installer Obsidian, cloner `MC-Joker59/wiki-second-brain` dans `Second Brain/`, remplir la clé n8n.

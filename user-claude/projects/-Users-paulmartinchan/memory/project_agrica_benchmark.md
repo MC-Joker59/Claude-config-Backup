@@ -8,7 +8,7 @@ metadata:
 ---
 
 Projet benchmark capacitaire AGRICA démarré le 2026-06-04.
-Dossier local : `C:\Users\PaulMARTINCHAN\Documents\Absis Conseil\Benchmark outils AGRICA\agrica-benchmark\`
+Dossier local : `~/Documents/Absis Conseil/Benchmark outils AGRICA/agrica-benchmark/`
 
 **Why:** Livrable client à usage de présentation — rendu éditorial type "Canva moderne", qualité graphique prioritaire.
 
