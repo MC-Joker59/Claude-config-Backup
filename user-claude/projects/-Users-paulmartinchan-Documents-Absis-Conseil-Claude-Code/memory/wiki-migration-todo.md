@@ -21,6 +21,12 @@ Paul prévoit (anticipé le 2026-06-29, sans date arrêtée) de **changer d'ordi
 - ⚠️ **GAP restant** : les implémentations de référence du benchmark (`benchmark-demo-test`, `absis-benchmark`, `carnet-ordre-benchmark`, `actif-uc-benchmark`, `signature-electronique-benchmark`) sont dans `Documents\Absis Conseil\Test Apps Creation\` — dépôt git LOCAL **sans remote** (0 remote, 13 fichiers non commités, ~7 Mo). **Non protégé.** À sauvegarder (3ᵉ remote privé, ou commit+push si un remote est créé). Proposé à Paul le 2026-09-05.
 - Réflexe à rappeler à Paul : **repousser les 2 (bientôt 3) dépôts** avant de changer de PC si des fichiers bougent encore.
 
+**MàJ 2026-09-22 — les DEUX dépôts sont désormais à jour :**
+- **`MC-Joker59/Claude-config-Backup` resynchronisé** (commit `0a7e16e`) : il décrivait encore l'install Windows, il reflète maintenant l'état macOS — `user-claude/` reconstruit depuis `~/.claude`, dossiers de mémoire renommés `C--Users-PaulMARTINCHAN-*` → `-Users-paulmartinchan-*`, `launch.json` en `python3`, permissions macOS/Chrome, et `LISEZ-MOI-MIGRATION.md` réécrit pour macOS (Homebrew, `gh`, + les 2 pièges vécus : modifier `settings.json` app ouverte n'installe pas les plugins ; « Create new vault » au lieu de « Open folder as vault »).
+- **`MC-Joker59/wiki-second-brain`** : poussé à chaque ingestion, 0 commit en attente.
+- **Rappel du rythme** : le wiki bouge souvent (je pousse systématiquement), la config rarement (à repousser quand `~/.claude` change). **Rien n'est automatique** dans aucun des deux.
+- ⚠️ **GAP `Test Apps Creation` TOUJOURS OUVERT** — signalé le 2026-09-05, non traité. Les implémentations de référence des benchmarks sont sur l'ancien PC Windows, dépôt git local sans remote, dans aucune sauvegarde. Le `launch.json` pointe vers des dossiers qui n'existent pas sur le Mac. À récupérer tant que l'ancienne machine est accessible.
+
 **Why:** tout son savoir est dans des fichiers locaux ; un mauvais transfert = perte définitive.
 
 **How to apply:** rappeler les 3 paquets à transférer —
